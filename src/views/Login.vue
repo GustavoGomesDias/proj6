@@ -35,9 +35,8 @@ export default {
                 password: this.password,
                 email: this.email
             }).then((res) => {
-                console.log(res);
-                
                 // Salvando o token no local storage do navegador
+                
                 localStorage.setItem('token', res.data.token);
                 this.$router.push({ name: 'Home' })
             }).catch(err => {
