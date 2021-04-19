@@ -31,7 +31,20 @@ export default {
     },
     methods: {
         login(){
-            
+            axios.post("http://localhost:8686/login", {
+                password: this.password,
+                email: this.email
+            }).then((res) => {
+                console.log(res);
+                
+                // Salvando o token no local storage do navegador
+                localStorage.setItem('token', res.data.token);
+                this.$router.push({ name: 'Home' })
+            }).catch(err => {
+                // Pra pegar o erro, na dúvida, console.log(err.response);
+                const msgErr = err.response.data.err;
+                this.err = msgErr; 
+            });
         }
     }
 }
