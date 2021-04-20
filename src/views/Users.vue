@@ -96,7 +96,7 @@ export default {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 }
-            }
+            };
 
             axios.delete("http://localhost:8686/user/"+this.deleteUserId, req).then(res => {
                 console.log(res);
