@@ -17,12 +17,35 @@
                 <td>{{ user.email }}</td>
                 <td>{{ processRole(user.role) }}</td>
                 <td>
-                    <button class="button is-success">Editar</button>|<button class="button is-danger">Deletar</button>
+                    <button class="button is-success">Editar</button>|<button class="button is-danger" @clikc="showModalUser(user.id)">Deletar</button>
                 </td>
             </tr>
         </tbody>
 
     </table>
+    
+    <div :class="{modal: true, 'is-active': showModal }">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="card">
+                <header clas="card-header">
+                    <p class="card-header-title">
+                        Deleção de Usuário!
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <p>Você quer deletar esse usuário?</p>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <a href="#" class="card-footer-item">Deletar</a>
+                    <a href="#" class="card-footer-item" @click="hideModal()">Cancelar</a>
+                </footer>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close" @click="hideModal()"></button>
+    </div>
 
 </template>
 
@@ -45,7 +68,8 @@ export default {
     },
     data(){
         return {
-            users: []
+            users: [],
+            showModal: false
         }
     },
     methods: {
@@ -55,6 +79,13 @@ export default {
             }else if(value == 1){
                 return "Admin";
             }
+        },
+
+        hideModal(){
+            this.showModal = false;
+        },
+        showModalUser(id){
+            this.showModal = true;
         }
     }
 }
