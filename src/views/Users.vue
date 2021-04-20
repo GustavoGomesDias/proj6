@@ -17,7 +17,7 @@
                 <td>{{ user.email }}</td>
                 <td>{{ processRole(user.role) }}</td>
                 <td>
-                    <button class="button is-success">Editar</button>|<button class="button is-danger" @clikc="showModalUser(user.id)">Deletar</button>
+                    <button class="button is-success">Editar</button>|<button class="button is-danger" @click="showModalUser(user.id)">Deletar</button>
                 </td>
             </tr>
         </tbody>
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <footer class="card-footer">
-                    <a href="#" class="card-footer-item">Deletar</a>
+                    <a href="#" class="card-footer-item" @click="deleteUser()">Deletar</a>
                     <a href="#" class="card-footer-item" @click="hideModal()">Cancelar</a>
                 </footer>
             </div>
@@ -64,12 +64,13 @@ export default {
         axios.get("http://localhost:8686/user", req).then(res => {
             console.log(res);
             this.users = res.data;
-        }).catch(err => console.log(err))
+        }).catch(err => console.log(err));
     },
     data(){
         return {
             users: [],
-            showModal: false
+            showModal: false,
+            deleteUserId: -1
         }
     },
     methods: {
@@ -84,8 +85,27 @@ export default {
         hideModal(){
             this.showModal = false;
         },
+        
         showModalUser(id){
+            this.deleteUserId = id;
             this.showModal = true;
+        },
+
+        deleteUser(){
+            const req = {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                }
+            }
+
+            axios.delete("http://localhost:8686/user/"+this.deleteUserId, req).then(res => {
+                console.log(res);
+                this.showModal = false;
+                this.users = this.users.filter( u => u.id != this.deleteUserId);
+            }).catch(err => {
+                console.log(err);
+                this.showModal = false;
+            })
         }
     }
 }
