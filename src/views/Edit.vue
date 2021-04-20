@@ -53,11 +53,18 @@ export default {
 
     methods: {
         update(){
-            axios.post("http://localhost:8686/user", {
+            const req = {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                }
+            };
+
+            axios.put("http://localhost:8686/user", {
                 name: this.name,
-                email: this.email
-            }).then(() => {
-                this.$router.push({ name: 'Home' })
+                email: this.email,
+                id: this.id
+            }, req).then(() => {
+                this.$router.push({ name: 'Users' })
             }).catch(err => {
                 // Pra pegar o erro, na dúvida, console.log(err.response);
                 const msgErr = err.response.data.err;
